@@ -5,8 +5,8 @@ const assert = require('assert');
 const chalk = require('chalk');
 
 // a module declared in local file
-const incrementor = require('./incrementor.js');
-
+const myModules = require('./incrementor.js');
+const incrementor = myModules.increment;
 
 const _1_expect = { value: 0, increment: 1 };
 const _1_actual = incrementor.state;
@@ -37,4 +37,3 @@ const _5_expect = { value: 3, increment: 4 };
 const _5_actual = incrementor.state;
 assert.deepStrictEqual(_5_actual, _5_expect);
 console.log(chalk.green('5. Pass'));
-

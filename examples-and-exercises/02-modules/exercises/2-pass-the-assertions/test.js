@@ -5,9 +5,10 @@ const assert = require('assert');
 const chalk = require('chalk');
 
 // a module declared in local file
+console.log('BEGIN', './test.js');
 const keepTruthy = require('./keep-truthy.js');
 
-
+console.log('READ MODULE', keepTruthy);
 
 const _1_expected = [-2, -1, 1, 2];
 const _1_actual = keepTruthy([-2, -1, 0, 1, 2]);

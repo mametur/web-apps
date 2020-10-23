@@ -3,11 +3,11 @@ const assert = require('assert');
 
 // a third-party module
 const chalk = require('chalk');
-
+console.log('BEGIN', './test.js');
 // a module declared in local file
 const greet = require('./greet.js');
 
-
+console.log('Read Module ', greet);
 
 const _1_expected = 'hello ludo';
 const _1_actual = greet('ludo');

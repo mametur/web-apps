@@ -5,8 +5,6 @@ const assert = require('assert');
 //  comparison between the actual and expected values
 //  line number
 
-
-
 // 'assert.strictEqual(a, b), like using ==='
 
 // `assert.strictEqual(a, b) checks if two values are strictly equal`
@@ -16,16 +14,14 @@ assert.strictEqual(1, 1);
 
 // `throws an error if they are NOT strictly `
 try {
-  assert.strictEqual('1', 1);
+	assert.strictEqual('1', 1);
 } catch (err) {
-  console.log(err);
-};
-
+	console.log(err);
+}
 
 // strict assertions work for NaN!
 // this code won't throw an error
-assert.strictEqual(NaN, NaN)
-
+assert.strictEqual(NaN, NaN);
 
 // 'assert.notStrictEqual(a, b), like using !=='
 
@@ -34,15 +30,14 @@ assert.notStrictEqual('1', 1);
 
 // `throws an error if they ARE strictly equal`
 try {
-  assert.notStrictEqual(1, 1);
+	assert.notStrictEqual(1, 1);
 } catch (err) {
-  console.log(err);
-};
-
+	console.log(err);
+}
 
 // again, strict assertions work for NaN!
 try {
-  assert.notStrictEqual(NaN, NaN)
+	assert.notStrictEqual(NaN, NaN);
 } catch (err) {
-  console.log(err)
+	console.log(err);
 }
