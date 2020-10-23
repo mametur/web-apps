@@ -5,8 +5,8 @@ const assert = require('assert');
 const chalk = require('chalk');
 
 // a module declared in local file
+console.log(chalk.red('Begin'), './test.js');
 const NameTag = require('./name-tag.js');
-
 
 console.log('-- testing first instance ---');
 
@@ -27,8 +27,6 @@ const _1c_expect = 'Hello I am Paulo';
 const _1c_actual = nameTag1.introduction;
 assert.deepStrictEqual(_1c_actual, _1c_expect);
 console.log(chalk.green('1 c. Pass'));
-
-
 
 console.log('-- testing second instance ---');
 
