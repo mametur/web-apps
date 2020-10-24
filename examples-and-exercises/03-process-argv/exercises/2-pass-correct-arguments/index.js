@@ -14,13 +14,9 @@ const listifiedInput = listify(userInput);
 console.log(listifiedInput);
 
 it('listified input should be correct', () => {
-  const expected = `- white cow
+	const expected = `- white cow
 - red cape
 - yellow hair
-- gold slipper
-`;
-  assert.strictEqual(listifiedInput, expected);
+- gold slipper`;
+	assert.strictEqual(listifiedInput, expected);
 });
-
-
-
