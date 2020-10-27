@@ -1,4 +1,4 @@
 module.exports = {
-  MODE: 'default',
-  PORT: 8080
+	MODE: 'default',
+	PORT: 3000,
 };
