@@ -298,6 +298,24 @@ Just copying his code is not all! After finishing with the tutorial you will nee
     });
     ```
 
+And here's a suggestion for how to organize your `courses.json` file:
+
+```json
+{
+  "nextId": 3,
+  "courses": [
+    {
+      "id": 0,
+      "name": "x-ray"
+    },
+    {
+      "id": 2,
+      "name": "gamma-ray"
+    }
+  ]
+}
+```
+
 You will be expected to turn in your code from his tutorial on a new repository called `restful-courses`. you will be assessed not only on your live demo, but also on the quality of your code, the correctness of your branches, the organization of your code, and the completeness of your README.  Your repo must include:
 
 #### Checklist
@@ -336,7 +354,11 @@ APIs & Client/Server web apps
 - Recordings: [Part 1](https://vimeo.com/415924788), [Part 2](https://vimeo.com/415919630), [Part 3](https://vimeo.com/416350569)
 - [About Servers](#about-servers)
 - `config` file: [how to](https://goenning.net/2016/05/13/how-i-manage-application-configuration-with-nodejs/)
-
+- HTTP Statuses
+  - [In 60 Seconds](https://www.youtube.com/watch?v=GrNrcmD6HLA)
+  - [httpstatuses.com](https://httpstatuses.com/)
+  - [wikipedia](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes)
+  - [http.cat](https://http.cat/)
 
 ### Lesson Plan
 
@@ -358,7 +380,7 @@ APIs & Client/Server web apps
 
 > after class
 
-**DIY Wiki**: [Starer Code](https://home.hackyourfuture.be/students/weekly-assignments#projects) (Group Project)
+**DIY Wiki**: [Starer Code](https://home.hackyourfuture.be/students/weekly-assignments#projects) (Individual Project)
 
 This week's project is to complete the code in [the `diy-wiki` repository](https://github.com/hackyourfuturebelgium/diy-wiki).
 
@@ -398,13 +420,6 @@ This week's project is to complete the code in [the `diy-wiki` repository](https
 
 - [slides](./slides/3-prep.html)
 - videos: [Part 1](https://vimeo.com/417960548), [Part 2](https://vimeo.com/418360319), [Part 3](https://vimeo.com/418359614)
-
-### HTTP Statuses
-
-- [In 60 Seconds](https://www.youtube.com/watch?v=GrNrcmD6HLA)
-- [httpstatuses.com](https://httpstatuses.com/)
-- [wikipedia](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes)
-- [http.cat](https://http.cat/)
 
 ### Express Router
 
@@ -603,3 +618,9 @@ Here are some tips to help you find your way:
    4. [`fs` part 2](https://vimeo.com/469895748)
    5. [Entries Manager part 1](https://vimeo.com/469896412)
    6. [Entries Manager part 2 & Project Intro](https://vimeo.com/469897191)
+2. Week 2
+   1. [Static & Dynamic Data](https://vimeo.com/472210283)
+   2. [Express: Params, Body, Queries ...](https://vimeo.com/472211229)
+   3. [... Params, Body, Queries](https://vimeo.com/472211640)
+   4. [Texidor](https://vimeo.com/472212077)
+   5. [Texidor Recap & DIY Wiki](https://vimeo.com/472212418)
