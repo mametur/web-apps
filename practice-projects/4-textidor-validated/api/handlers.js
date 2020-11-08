@@ -1,196 +1,186 @@
 const util = require('util');
 const path = require('path');
 const fs = require('fs');
-_;
+const tv4 = require('tv4');
 
-_;
-_;
+const PROFILES_SCHEMA = require('../data/file-schema.json');
+const DATA_PATH = path.join(__dirname, '..', 'data', 'files-data.json');
 
-const readFile = util.promisify(fs.readFile)
-const writeFile = util.promisify(fs.writeFile)
+const readFile = util.promisify(fs.readFile);
+const writeFile = util.promisify(fs.writeFile);
 
 const handlers = {
-  readAll: async (req, res) => {
-    try {
-      _;
-      _;
+	readAll: async (req, res) => {
+		try {
+			const filesDataString = await readFile(DATA_PATH, 'utf-8');
+			const filesData = JSON.parse(filesDataString);
 
-      const fileNames = filesData.files
-        .map(entry => ({
-          id: entry.id,
-          name: entry.name,
-        }));
+			const fileNames = filesData.files.map((entry) => ({
+				id: entry.id,
+				name: entry.name,
+			}));
 
-      res.json(fileNames)
+			res.json(fileNames);
+		} catch (err) {
+			console.log(err);
 
-    } catch (err) {
-      console.log(err)
+			if (err && err.code === 'ENOENT') {
+				res.status(404).end();
+				return;
+			}
 
-      if (err && err.code === 'ENOENT') {
-        res.status(404).end();
-        return;
-      }
+			next(err);
+		}
+	},
+	readOne: async (req, res) => {
+		const fileId = Number(req.params.id);
 
-      next(err);
-    }
-  },
-  readOne: async (req, res) => {
-    const fileId = _;
+		try {
+			const filesDataString = await readFile(DATA_PATH, 'utf-8');
+			const filesData = JSON.parse(filesDataString);
 
-    try {
-      const filesDataString = await readFile(DATA_PATH, 'utf-8');
-      const filesData = JSON.parse(filesDataString);
+			const entryWithId = filesData.files.find((entry) => entry.id === fileId);
 
-      const entryWithId = filesData.files
-        .find(entry => _);
+			if (entryWithId) {
+				res.json(entryWithId);
+			} else {
+				res.status(404).send('There is no id : ' + fileId);
+			}
+		} catch (err) {
+			console.log(err);
 
-      if (entryWithId) {
-        _;
-      } else {
-        res.status(404).end();
-      }
+			if (err && err.code === 'ENOENT') {
+				// if you type res.  it will terminate the rest
+				res.status(404).end();
+				return;
+			}
 
-    } catch (err) {
-      console.log(err)
+			next(err);
+		}
+	},
+	create: async (req, res) => {
+		const newFile = req.body;
 
-      if (err && err.code === 'ENOENT') {
-        res.status(404).end();
-        return;
-      }
+		try {
+			const filesDataString = await readFile(DATA_PATH, 'utf-8');
+			const filesData = JSON.parse(filesDataString);
 
-      next(err);
-    }
-  },
-  create: async (req, res) => {
-    const newFile = req.body;
+			newFile.id = filesData.nextId;
+			filesData.nextId++;
 
-    try {
-      const filesDataString = await readFile(DATA_PATH, 'utf-8');
-      const filesData = JSON.parse(filesDataString);
+			const isValid = tv4.validate(newFile, PROFILES_SCHEMA);
 
-      _;
-      _;
+			if (!isValid) {
+				const error = tv4.error;
+				console.error(error);
 
-      const isValid = _;
+				res.status(400).json({
+					error: {
+						message: error.message,
+						dataPath: error.dataPath,
+					},
+				});
+				return;
+			}
 
-      if (!isValid) {
-        const error = tv4.error
-        console.error(error)
+			filesData.files.push(newFile);
 
-        res.status(400).json({
-          error: {
-            message: error.message,
-            dataPath: error.dataPath
-          }
-        })
-        return
-      }
+			const newFileDataString = JSON.stringify(filesData, null, '  ');
 
-      filesData.files.push(newFile);
+			await writeFile(DATA_PATH, newFileDataString);
 
-      const newFileDataString = JSON.stringify(filesData, null, '  ');
+			res.json(newFile);
+		} catch (err) {
+			console.log(err);
 
-      await _;
+			if (err && err.code === 'ENOENT') {
+				res.status(404).end();
+				return;
+			}
 
-      res.json(newFile);
+			next(err);
+		}
+	},
+	update: async (req, res) => {
+		const idToUpdate = Number(req.params.id);
 
-    } catch (err) {
-      console.log(err);
+		const updateFile = req.body;
+		updateFile.id = idToUpdate;
+		const isValid = tv4.validate(updateFile, PROFILES_SCHEMA);
 
-      if (err && err.code === 'ENOENT') {
-        res.status(404).end();
-        return;
-      }
+		if (!isValid) {
+			const error = tv4.error;
+			console.error(error);
 
-      next(err);
-    }
+			res.status(400).json({
+				error: {
+					message: error.message,
+					dataPath: error.dataPath,
+				},
+			});
+			return;
+		}
 
-  },
-  update: async (req, res) => {
-    const idToUpdate = Number(req.params.id);
+		try {
+			const filesDataString = await readFile(DATA_PATH, 'utf-8');
+			const filesData = JSON.parse(filesDataString);
 
-    _;
-    _;
-    _;
+			const entryToUpdate = filesData.files.find((file) => file.id === idToUpdate);
 
-    if (!isValid) {
-      _;
-      console.error(error)
+			if (entryToUpdate) {
+				const findIndex = filesData.files.indexOf(entryToUpdate);
 
-      res.status(400).json({
-        error: {
-          message: error.message,
-          dataPath: error.dataPath
-        }
-      })
-      return
-    }
+				filesData.files[findIndex] = updateFile;
 
-    try {
-      const filesDataString = await readFile(DATA_PATH, 'utf-8');
-      const filesData = JSON.parse(filesDataString);
+				await writeFile(DATA_PATH, JSON.stringify(filesData));
 
-      const entryToUpdate = filesData.files
-        .find(file => file.id === idToUpdate);
+				res.redirect(303, '/api/files');
+			} else {
+				res.json(`no entry with id ${idToUpdate}`);
+			}
+		} catch (err) {
+			console.log(err);
 
-      if (entryToUpdate) {
-        _;
-        _;
+			if (err && err.code === 'ENOENT') {
+				res.status(404).end();
+				return;
+			}
 
-        _;
+			next(err);
+		}
+	},
+	delete: async (req, res) => {
+		const idToDelete = Number(req.params.id);
 
-        _;
+		try {
+			const filesDataString = await readFile(DATA_PATH, 'utf-8');
+			const filesData = JSON.parse(filesDataString);
 
-        res.redirect(303, '/api/files');
-      } else {
-        res.json(`no entry with id ${idToUpdate}`);
-      }
+			const entryToDelete = filesData.files.find((file) => file.id === idToDelete);
 
-    } catch (err) {
-      console.log(err);
+			if (entryToDelete) {
+				const findIndex = filesData.files.indexOf(entryToDelete);
 
-      if (err && err.code === 'ENOENT') {
-        res.status(404).end();
-        return;
-      }
+				filesData.files.splice(findIndex, 1);
+				const newFileDataString = JSON.stringify(filesData, null, '  ');
 
-      next(err);
-    }
-  },
-  delete: async (req, res) => {
-    const idToDelete = _;
+				await writeFile(DATA_PATH, newFileDataString);
 
-    try {
-      const filesDataString = await readFile(DATA_PATH, 'utf-8');
-      const filesData = JSON.parse(filesDataString);
+				res.redirect(303, '/api/files');
+			} else {
+				res.send(`no entry with id ${idToDelete}`);
+			}
+		} catch (err) {
+			console.log(err);
 
-      const entryToDelete = filesData.files
-        .find(file => file.id === idToDelete);
+			if (err && err.code === 'ENOENT') {
+				res.status(404).end();
+				return;
+			}
 
-      if (_) {
-
-        _;
-
-        const newFileDataString = JSON.stringify(filesData, null, '  ');
-
-        await writeFile(DATA_PATH, newFileDataString);
-
-        res.redirect(303, '/api/files');
-      } else {
-        res.send(`no entry with id ${idToDelete}`);
-      }
-
-    } catch (err) {
-      console.log(err);
-
-      if (err && err.code === 'ENOENT') {
-        res.status(404).end();
-        return;
-      }
-
-      next(err);
-    }
-  },
+			next(err);
+		}
+	},
 };
 
 module.exports = handlers;
